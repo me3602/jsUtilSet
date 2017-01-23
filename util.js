@@ -1,5 +1,5 @@
 ﻿/**
-* js util set 
+* js util set
 */
 
 
@@ -12,12 +12,12 @@ if(typeof jQuery == 'undefined') jQuery = {};
 * namespace util
 */
 var util = (function($,undefined){
-	
+
 return {
-	
+
 
 test : function(){
-	console.log("테스트");	
+	console.log("테스트");
 }
 
 
@@ -30,17 +30,17 @@ test : function(){
 	this.finAction =  (typeof(finAction) == 'function')? finAction : function(){};
 	this.curTimer;
 	this.curTime;
-	
-	this.startTimer = function(){		
-		var timerTime = this.limitTime;	
+
+	this.startTimer = function(){
+		var timerTime = this.limitTime;
 		var inter = this.interAction;
-		var fin = this.finAction;		
+		var fin = this.finAction;
 		var setGlobalCurTime = function(timerTime){
 			this.curTime = timerTime;
 		}
-		
-		
-		var timer = setInterval(function(){	
+
+
+		var timer = setInterval(function(){
 			if(timerTime < 0 ){
 					clearInterval(timer);
 					fin();
@@ -48,15 +48,15 @@ test : function(){
 					setGlobalCurTime(timerTime--);
 					inter();
 				}
-		},1000);			
-		
+		},1000);
+
 		this.curTimer = timer;
 	};
-	
+
 	this.stopTimer = function(){
 		clearInterval(this.curTimer);
 	};
-	
+
 	return this;
 }
 
@@ -68,28 +68,63 @@ test : function(){
 	var hour = Math.floor(num/3600);
 	var min = Math.floor((num-(hour*3600))/60);
 	var sec = num - (hour*3600) - (min*60);
-	
+
 	if(hour < 10) hour = "0" + hour;
 	if(min < 10) min = "0" + min;
 	if(sec < 10) sec = "0" + sec;
-	
+
 	var result = "";
 	switch(format){
 	case('H:i:s'): result = hour + ":" + min + ":" + sec; break;
-	case('i:s'): result = min + ":" + sec; break;	
+	case('i:s'): result = min + ":" + sec; break;
 	}
-	
+
 	return result;
 }
 
 /**
 * 휴대폰 번호 유효성 검사 함수
-*/	
+*/
 , checkPhoneNum : function(num){
 		var regex = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/;
-		
-		return regex.test(num);	
+
+		return regex.test(num);
 	}
+
+
+	/**
+	* 체크박스 세팅 함수
+	* params : 부모엘리먼트(Object), 전체동의체크박스 아이디(String), 초기값(boolean/true: 체크상태)
+	*/
+	, setCheckBox : function(obj,allID,init){
+			var arrAllObj = obj.children;
+			var arrCheckbox = new Array();
+
+			for(var i=0; i<arrAllObj.length; i++){
+				if(arrAllObj[i].type == 'checkbox'){
+					arrCheckbox.push(arrAllObj[i]);
+				}
+			}
+
+			for(var i=0; i<arrCheckbox.length; i++){
+				if(arrCheckbox[i].id == allID){
+					arrCheckbox[i].addEventListener('click',function(){
+						for(var j=0; j<arrCheckbox.length; j++){
+							if(i != j){
+								arrCheckbox[j].checked = this.checked;
+							}
+						}
+					});
+					break;
+				};
+			}
+
+			if(init == true){
+				for(var i=0; i<arrCheckbox.length; i++){
+					arrCheckbox[i].checked = true;
+				}
+			}
+		}
 
 }
 
@@ -99,8 +134,8 @@ test : function(){
 String.prototype.trim = function() {
 return this.replace(/(^\s*)|(\s*$)/gi, "");
 }
- 
- 
+
+
 /* *
  *date
 * Useage : new Date().format(dateform)
@@ -110,7 +145,7 @@ Date.prototype.format = function(f) {
 
     var weekName = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
     var d = this;
-    
+
     return f.replace(/(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function($1) {
         switch ($1) {
             case "yyyy": return d.getFullYear();
@@ -147,6 +182,6 @@ String.prototype.setDateForm = function(len){
 			dateForm += this.substr(10,2);
 			break;
 	}
-	
+
 	return dateForm;
 };
