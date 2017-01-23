@@ -126,6 +126,34 @@ test : function(){
 			}
 		}
 
+
+    /**
+     * 파일확장자 체크
+     * @param fileName
+     * @param checkType
+     * @returns {boolean}
+     */
+    ,checkFileExt: function(fileName, checkType){
+        var extArray;
+        switch(checkType){
+            case "video": extArray = ['avi', 'wmv', 'asf', 'mp4', 'flv', 'mkv'];
+            case "img" 	: extArray = ['jpg', 'jpeg', 'png', 'bmp', 'gif'];
+            case "excel": extArray = ['xls', 'xlsx'];
+            default 	: extArray = ['ppt', 'pptx', 'xls', 'xlsx', 'doc', 'docx', 'hwp', 'txt', 'text', 'jpg', 'jpeg', 'png', 'bmp', 'gif', 'zip', 'alz', 'pdf'];
+        }
+
+        var pathMid = fileName.lastIndexOf(".");
+        var pathEnd = fileName.length;
+
+        var extName = fileName.substring(pathMid+1, pathEnd).toLowerCase();
+
+        if(extArray.indexOf(extName) != -1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }
 
 })(jQuery)
